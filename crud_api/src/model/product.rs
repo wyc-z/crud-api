@@ -1,6 +1,6 @@
 use rust_decimal::Decimal;
 
-use crate::model::validations;
+use crate::model::{normalize_text, validations};
 
 pub struct Product {
     id: Option<u32>,
@@ -30,14 +30,14 @@ impl Product {
         let description = validations::description(description);
         Self {
             id,
-            name,
+            name: normalize_text(&name),
             brand_id,
             category_id,
             cost,
             price,
             stock,
-            sku,
-            description,
+            sku: sku.split_whitespace().collect(),
+            description: description.map(|d| normalize_text(&d)),
         }
     }
 

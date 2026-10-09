@@ -1,4 +1,4 @@
-use crate::model::validations;
+use crate::model::{normalize_text, validations};
 
 pub struct Category {
     id: Option<u32>,
@@ -11,8 +11,8 @@ impl Category {
         let description = validations::description(description);
         Self {
             id,
-            name,
-            description,
+            name: normalize_text(&name),
+            description: description.map(|d| normalize_text(&d)),
         }
     }
     pub fn id(&self) -> Option<u32> {
